@@ -28,8 +28,8 @@ class Ecosistema:
         self.especies.append(especie)
     
     def simular(self, tiempo):
-        for _ in range(tiempo):
-            print(f"\nEstado del ecosistema en el tiempo {_}:")
+        for i in range(tiempo):
+            print(f"\nEstado del ecosistema en el tiempo {i}:")
             for especie in self.especies:
                 especie.actualizar_poblacion()
                 print(f"Especie: {especie.nombre}, Población: {especie.poblacion}")
