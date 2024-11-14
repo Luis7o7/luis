@@ -1,6 +1,4 @@
 import random
-from sklearn.linear_model import LinearRegression
-import numpy as np
 
 class EcosistemaGrafo:
     def __init__(self):
@@ -19,27 +17,10 @@ class EcosistemaGrafo:
             'region_3': ['region_1', 'region_4'],
             'region_4': ['region_2', 'region_3']
         }
-        
-        # Historial de alces y lobos para el modelo de predicción
-        self.historial_alces = {region: [] for region in self.regiones}
-        self.modelos_alces = {region: LinearRegression() for region in self.regiones}
 
     def crecer_pasto(self, region):
         # Cada región tiene un crecimiento de pasto aleatorio
         self.regiones[region]['pasto'] += random.randint(10, 30)
-
-    def predecir_crecimiento_alces(self, region):
-        # Modelo simple para predecir el crecimiento de alces
-        historial = self.historial_alces[region]
-        if len(historial) > 5:
-            X = np.arange(len(historial)).reshape(-1, 1)
-            y = np.array(historial)
-            self.modelos_alces[region].fit(X, y)
-            prediccion = self.modelos_alces[region].predict([[len(historial)]])
-            return int(prediccion)
-        else:
-            # Si no hay suficiente historial, usa un valor aleatorio
-            return random.randint(-2, 2)
 
     def alimentar_alces(self, region):
         alces = self.regiones[region]['alces']
@@ -48,8 +29,8 @@ class EcosistemaGrafo:
         # Los alces comen pasto y se reproducen si hay suficiente comida
         if pasto >= alces:
             self.regiones[region]['pasto'] -= alces
-            crecimiento_alces = self.predecir_crecimiento_alces(region)
-            self.regiones[region]['alces'] += crecimiento_alces
+            if random.random() < 0.3:  # Probabilidad de reproducción
+                self.regiones[region]['alces'] += random.randint(1, 10)
         else:
             # Si no hay suficiente pasto, los alces disminuyen
             self.regiones[region]['alces'] -= random.randint(1, 2)
@@ -60,9 +41,6 @@ class EcosistemaGrafo:
 
         # Evitar valores negativos
         self.regiones[region]['alces'] = max(self.regiones[region]['alces'], 0)
-
-        # Agregar al historial para entrenar el modelo
-        self.historial_alces[region].append(self.regiones[region]['alces'])
 
     def alimentar_lobos(self, region):
         lobos = self.regiones[region]['lobos']

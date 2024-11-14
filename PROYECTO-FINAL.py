@@ -60,4 +60,4 @@ class Ecosistema:
 ecosistema = Ecosistema(cant_alces=50, cant_lobos=10, cant_pasto=350, tiempo_crecer_pasto=5)
 
 # Ejecuta la simulación por 50 pasos de tiempo
-ecosistema.simular(50)
+ecosistema.simular(500)
